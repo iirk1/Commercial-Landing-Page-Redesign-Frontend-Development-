@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <!-- Swiper styles -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+
+    <script>
+        // Tailwind config to use Montserrat
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <script src="https://unpkg.com/@tolgee/web"></script>
+    <script>
+        // Initialize Tolgee
+        const tg = Tolgee().use(TolgeeDetectLanguage()).init({ language: 'en', fallbackLanguage: 'en' });
+    </script>
+
+
+    <title>FERM Page</title>
+</head>
+
+
+<body class="relative w-full font-sans">
+
+    <!-- GLOBAL BACKGROUND -->
+    <div class="fixed inset-0 bg-[url('../img/bgImg.jpg')] bg-cover bg-center -z-20"></div>
+
+    <header id="header" class="fixed top-0 left-0 w-full h-[55px] z-50
+                 transition-all duration-300 lg:h-[70px]">
+
+        <div class="max-w-[1200px] mx-auto px-5 h-full flex items-center justify-between">
+
+            <!-- MENU (burger) -->
+            <button id="burger" class="lg:hidden w-10 h-10 flex items-center justify-center" aria-label="Menu"
+                data-tg-key="header.burger">
+                <img src="/img/menu.png" alt="menu" class="w-7 h-7">
+            </button>
+
+            <!-- DESKTOP NAV -->
+            <nav class="hidden lg:flex items-center gap-6">
+                <a href="#home" data-tg-key="header.nav.home"><img src="/img/home.png" class="w-6 h-6" alt="Home"></a>
+                <a href="#user" data-tg-key="header.nav.user"><img src="/img/user.png" class="w-6 h-6" alt="User"></a>
+                <a href="#info" data-tg-key="header.nav.info"><img src="/img/info.png" class="w-6 h-6" alt="Info"></a>
+                <a href="#email" data-tg-key="header.nav.email"><img src="/img/email.png" class="w-6 h-6"
+                        alt="Email"></a>
+            </nav>
+
+            <div></div>
+
+            <!-- LANGUAGE MENU -->
+            <div class="relative group">
+                <button id="langBtn" class="flex items-center justify-center w-14 h-14 lg:w-12 lg:h-12 p-2"
+                    aria-label="Language selector" data-tg-key="header.langBtn">
+                    <img src="/img/language.png" alt="language" class="w-7 h-7">
+                </button>
+
+                <!-- dropdown -->
+                <div id="langMenu" class="absolute right-full top-1/2 -translate-y-1/2
+                    text-white font-bold
+                    opacity-0 invisible
+                    transition px-3 py-2 flex gap-2 whitespace-nowrap
+                    lg:group-hover:opacity-100 lg:group-hover:visible">
+
+                    <button class="text-green-400" data-lang="en" data-tg-key="header.lang.en"
+                        onclick="changeLang('en')">EN</button>
+                    <button data-lang="es" data-tg-key="header.lang.es" onclick="changeLang('es')">ES</button>
+                    <button data-lang="fr" data-tg-key="header.lang.fr" onclick="changeLang('fr')">FR</button>
+                    <button data-lang="pt" data-tg-key="header.lang.pt" onclick="changeLang('pt')">PT</button>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+
+    <!-- FULLSCREEN MOBILE MENU -->
+    <div id="mobileMenu" class="fixed inset-0 z-[60]
+         bg-[#5ba233]/40 backdrop-blur-lg
+         text-white
+         opacity-0 invisible
+         transition-all duration-300" onclick="closeMenu()">
+
+        <!-- Close button -->
+        <button id="closeMenu" class="absolute top-3 left-4 w-10 h-10 text-3xl" aria-label="Close menu"
+            data-tg-key="mobileMenu.close">
+            ✕
+        </button>
+
+        <!-- Menu content -->
+        <nav class="h-[400px] mt-20 flex flex-col items-center justify-start gap-8 text-xl"
+            onclick="event.stopPropagation()">
+            <a href="#home" class="hover:text-green-400" onclick="closeMenu()" data-tg-key="mobileMenu.home">Home</a>
+            <a href="#user" class="hover:text-green-400" onclick="closeMenu()" data-tg-key="mobileMenu.user">User</a>
+            <a href="#info" class="hover:text-green-400" onclick="closeMenu()" data-tg-key="mobileMenu.info">Info</a>
+            <a href="#email" class="hover:text-green-400" onclick="closeMenu()" data-tg-key="mobileMenu.email">Email</a>
+        </nav>
+    </div>
+
+
+    <script>
+        // ---------- MOBILE MENU ----------
+        const burger = document.getElementById('burger');
+        const menu = document.getElementById('mobileMenu');
+        const closeBtn = document.getElementById('closeMenu');
+
+        function openMenu() {
+            menu.classList.remove('opacity-0', 'invisible');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMenu() {
+            menu.classList.add('opacity-0', 'invisible');
+            document.body.style.overflow = '';
+        }
+
+        burger.addEventListener('click', openMenu);
+        closeBtn.addEventListener('click', closeMenu);
+
+        // ---------- LANGUAGE MENU ----------
+        const langBtn = document.getElementById('langBtn');
+        const langMenu = document.getElementById('langMenu');
+        const langButtons = langMenu.querySelectorAll('button');
+
+        function changeLang(lang) {
+            tg.changeLanguage(lang);
+
+            langButtons.forEach(btn => {
+                if (btn.dataset.lang === lang) {
+                    btn.classList.add('text-green-400');
+                } else {
+                    btn.classList.remove('text-green-400');
+                }
+            });
+
+            if (window.innerWidth < 1024) {
+                langMenu.classList.add('opacity-0', 'invisible');
+            }
+        }
+
+        langBtn.addEventListener('click', (e) => {
+            if (window.innerWidth < 1024) {
+                e.stopPropagation();
+                langMenu.classList.toggle('opacity-0');
+                langMenu.classList.toggle('invisible');
+            }
+        });
+
+        document.addEventListener('click', () => {
+            if (window.innerWidth < 1024) {
+                langMenu.classList.add('opacity-0', 'invisible');
+            }
+        });
+
+        // ---------- HEADER SCROLL ----------
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                header.classList.add('bg-[#5ba233]/40', 'backdrop-blur-md', 'shadow-md');
+            } else {
+                header.classList.remove('bg-[#5ba233]/40', 'backdrop-blur-md', 'shadow-md');
+            }
+        });
+    </script>
+
+
+    <main>
+
+        <!-- Main Block -->
+        <section class="relative w-full flex flex-col pt-[70px] md:pt-[55px]">
+
+            <!-- Upper main block -->
+            <div
+                class="pt-5 md:pt-5 lg:pt-10 pb-10 md:pb-15 lg:pb-12 flex flex-col items-center justify-center text-center text-white px-2 md:px-5 lg:px-5">
+                <div class="flex flex-col items-center gap-3 md:gap-1 lg:gap-6">
+
+                    <!-- Logo -->
+                    <img src="../img/logo.png" alt="logo" class="relative z-10 w-62 h-32" data-tg-key="main.logo">
+
+                    <!-- Main title -->
+                    <h1 class="text-4xl sm:text-7xl md:text-6xl lg:text-8xl font-extrabold uppercase
+                               drop-shadow-[2px_2px_4px_rgba(0,0,0,0.6)] mb-8 md:mb-3 lg:mb-3"
+                        data-tg-key="main.title">
+                        FERM
+                    </h1>
+                </div>
+
+                <!-- Subtitle / description -->
+                <p class="max-w-full text-base sm:text-lg md:text-3xl uppercase tracking-widest
+                          drop-shadow-[2px_2px_4px_rgba(0,0,0,0.6)] font-bold mx-auto sm:max-w-[600px]"
+                    data-tg-key="main.description">
+                    FRAMEWORK FOR ECOSYSTEM RESTORATION MONITORING
+                </p>
+            </div>
+
+            <!-- info block -->
+            <div class="w-full flex flex-col md:flex-row">
+
+                <!-- Accent image (desktop only) -->
+                <div class="hidden lg:block lg:w-1/2 md:w-2/5 md:block h-auto bg-[url('../img/accent1.png')] bg-cover bg-center"
+                    data-tg-key="main.accentImage">
+                </div>
+
+                <!-- Static text -->
+                <div class="w-full lg:w-1/2 md:w-3/5 flex items-start justify-start max-w-[500px]">
+                    <p class="font-bold text-left text-black leading-snug p-2 font-size-xs" data-tg-key="main.infoText">
+                        <span class="uppercase inline-block mb-1 bg-white px-1 leading-[1.5]">
+                            THE OFFICIAL FRAMEWORK FOR MONITORING GLOBAL
+                            PROGRESS FOR THE UN DECADE ON ECOSYSTEM
+                            RESTORATION AND KMGBF TARGET 2
+                        </span>
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- Bottom accent -->
+            <div class="w-full h-[70px] md:h-[80px] lg:h-[100px] bg-[url('../img/accent.png')] bg-cover bg-center"
+                data-tg-key="main.bottomAccent">
+            </div>
+
+        </section>
+
+        <!-- CARDS SECTION -->
+        <section class="relative w-full overflow-hidden">
+
+            <!-- Background image -->
+            <div class="absolute inset-0 bg-[url('../img/bgWhite.jpg')] bg-cover bg-center -z-10"
+                data-tg-key="cards.bg"></div>
+
+            <!-- Content wrapper -->
+            <div class="relative max-w-[1200px] mx-auto px-5 py-20">
+
+                <!-- Green container -->
+                <div class="relative rounded-[32px] p-8 md:p-12 shadow-lg overflow-hidden
+                            bg-[url('../img/bgGreen.jpg')] bg-cover bg-center" data-tg-key="cards.greenContainer">
+
+                    <div class="grid grid-cols-1 lg:grid-cols-[2fr_auto_1fr] gap-8 items-stretch ">
+
+                        <!-- LEFT BLOCK  -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 auto-rows-fr">
+
+                            <!-- Card 1 -->
+                            <div class="bg-[#1c5e58] text-white rounded-2xl p-6 text-center
+                                       h-full flex flex-col justify-center
+                                       transition-all duration-300 ease-out
+                                       hover:scale-[1.03] hover:shadow-xl">
+                                <h3 class="font-extrabold uppercase text-xl" data-tg-key="cards.card1.title">
+                                    Share your initiatives
+                                    <br /><span>- - -</span>
+                                </h3>
+                                <p class="text-sm opacity-90 font-bold" data-tg-key="cards.card1.desc">
+                                    Register your restoration initiatives and continuously monitor their progress
+                                </p>
+                            </div>
+
+                            <!-- Card 2 -->
+                            <div class="bg-[#1c5e58] text-white rounded-2xl p-6 text-center
+                                       h-full flex flex-col justify-center
+                                       transition-all duration-300 ease-out
+                                       hover:scale-[1.03] hover:shadow-xl">
+                                <h3 class="font-extrabold uppercase text-xl" data-tg-key="cards.card2.title">
+                                    Map & monitor progress
+                                    <br /><span>- - -</span>
+                                </h3>
+                                <p class="text-sm opacity-90 font-bold" data-tg-key="cards.card2.desc">
+                                    Track restoration actions effectiveness with a selection of keys indicators
+                                </p>
+                            </div>
+
+                            <!-- Card 3 -->
+                            <div class="bg-[#1c5e58] text-white rounded-2xl p-6 text-center
+                                       h-full flex flex-col justify-center
+                                       transition-all duration-300 ease-out
+                                       hover:scale-[1.03] hover:shadow-xl">
+                                <h3 class="font-extrabold uppercase text-xl" data-tg-key="cards.card3.title">
+                                    Explore all initiatives
+                                    <br /><span>- - -</span>
+                                </h3>
+                                <p class="text-sm opacity-90 font-bold" data-tg-key="cards.card3.desc">
+                                    Search for restoration initiatives from all ecosystems around the world
+                                </p>
+                            </div>
+
+                            <!-- Card 4 -->
+                            <div class="bg-[#1c5e58] text-white rounded-2xl p-6 text-center
+                                       h-full flex flex-col justify-center
+                                       transition-all duration-300 ease-out
+                                       hover:scale-[1.03] hover:shadow-xl">
+                                <h3 class="font-extrabold uppercase text-xl" data-tg-key="cards.card4.title">
+                                    Learn to restore
+                                    <br /><span>- - -</span>
+                                </h3>
+                                <p class="text-sm opacity-90 font-bold" data-tg-key="cards.card4.desc">
+                                    Search and discover replicable restoration goods practices for any ecosystems
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- VERTICAL DOTS -->
+                        <div class="hidden lg:flex justify-center items-center">
+                            <div class="flex flex-col gap-6">
+                                <span class="w-[4px] h-10 bg-white/70 rounded-full"></span>
+                                <span class="w-[4px] h-10 bg-white/70 rounded-full"></span>
+                                <span class="w-[4px] h-10 bg-white/70 rounded-full"></span>
+                                <span class="w-[4px] h-10 bg-white/70 rounded-full"></span>
+                                <span class="w-[4px] h-10 bg-white/70 rounded-full"></span>
+                                <span class="w-[4px] h-10 bg-white/70 rounded-full"></span>
+                                <span class="w-[4px] h-10 bg-white/70 rounded-full"></span>
+                            </div>
+                        </div>
+
+                        <!-- RIGHT BLOCK -->
+                        <div class="flex flex-col gap-6 auto-rows-fr">
+
+                            <!-- Card 5 -->
+                            <div class="bg-white text-[#1c5e58] rounded-2xl p-8 text-center
+                                       h-full flex flex-col justify-center
+                                       transition-all duration-300 ease-out
+                                       hover:scale-[1.03] hover:shadow-xl">
+                                <h3 class="font-extrabold uppercase text-lg mb-1" data-tg-key="cards.card5.title">
+                                    I am new to FERM!
+                                    <br /><span>- - -</span>
+                                </h3>
+                                <p class="text-sm font-bold" data-tg-key="cards.card5.desc">
+                                    Are you a new user?
+                                    <br />
+                                    Sign up to the FERM to access to the platform functionalities
+                                </p>
+                            </div>
+
+                            <!-- Card 6 -->
+                            <div class="bg-white text-[#1c5e58] rounded-2xl p-8 text-center
+                                       h-full flex flex-col justify-center
+                                       transition-all duration-300 ease-out
+                                       hover:scale-[1.03] hover:shadow-xl">
+                                <h3 class="font-extrabold uppercase text-lg mb-1" data-tg-key="cards.card6.title">
+                                    I am a CBD focal point
+                                    <br /><span>- - -</span>
+                                </h3>
+                                <p class="text-sm font-bold" data-tg-key="cards.card6.desc">
+                                    CBD focal points can access the default data for reporting on headline indicator 2.1
+                                    of the KM-GBF
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom accent -->
+            <div class="w-full h-[70px] md:h-[80px] lg:h-[100px] bg-[url('../img/accent.png')] bg-cover bg-center"
+                data-tg-key="cards.bottomAccent">
+            </div>
+
+        </section>
+
+        <!-- FERM SECTION -->
+        <section class="relative w-full overflow-hidden">
+
+            <!-- white background with texture -->
+            <div class="absolute inset-0 bg-[url('../img/bgWhite.jpg')] bg-cover bg-center -z-10"
+                data-tg-key="about.bg"></div>
+
+            <!-- Content wrapper -->
+            <div
+                class="relative max-w-[1200px] mx-auto px-5 py-10 md:py-20 lg:py-20 flex flex-col md:flex-row lg:flex-row gap-6 md:gap-12 lg:gap-12">
+
+                <!-- Left content -->
+                <div class="flex-1 flex flex-col gap-6 md:gap-8 lg:gap-8">
+
+                    <!-- Site title -->
+                    <h1 class="text-6xl font-extrabold text-[#5ba233] drop-shadow-lg text-center lg:text-left"
+                        data-tg-key="about.title">
+                        FERM
+                    </h1>
+
+                    <!-- Card 1 -->
+                    <div class="flex flex-col md:flex-row sm:flex-col items-center gap-4 w-full">
+                        <img src="../img/logo1.png" alt="first logo"
+                            class="w-[200px] md:w-[300px] h-auto flex-shrink-0 mx-auto md:mx-0"
+                            data-tg-key="about.logo1">
+                        <p class="text-center md:text-left text-sm sm:text-base md:text-md flex-1"
+                            data-tg-key="about.card1">
+                            The FERM is the official framework for operational monitoring global progress
+                            and disseminating good practices for the
+                            <a href="#" class="text-blue-600 underline" data-tg-key="about.card1.link1">UN Decade on
+                                Ecosystem
+                                Restoration</a>.
+                        </p>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="flex flex-col md:flex-row sm:flex-col items-center gap-4 w-full">
+                        <img src="../img/logo2.png" alt="second logo"
+                            class="w-[200px] md:w-[300px] h-auto flex-shrink-0 mx-auto md:mx-0"
+                            data-tg-key="about.logo2">
+                        <p class="text-center md:text-left text-sm sm:text-base md:text-md flex-1"
+                            data-tg-key="about.card2">
+                            It also supports countries in reporting areas under restoration for the
+                            <a href="#" class="text-blue-600 underline" data-tg-key="about.card2.link1">Kunming-Montreal
+                                Global
+                                Biodiversity Framework Target 2</a>,
+                            which aims to restore 30% of degraded ecosystems by 2030.
+                        </p>
+                    </div>
+
+                    <!-- Main text & buttons -->
+                    <div class="flex flex-col mt-2 gap-4 text-center sm:text-center lg:text-left">
+                        <p class="text-gray-800 text-base sm:text-lg" data-tg-key="about.mainText">
+                            FERM is for everyone involved in restoration, including national and local governments, NGOs
+                            and civil society, Indigenous Peoples, local communities, researchers and academia.
+                        </p>
+                        <span class="text-gray-600 font-semibold" data-tg-key="about.label">
+                            For more information about the platform read.
+                        </span>
+
+                        <!-- Buttons grid -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 justify-center lg:justify-start">
+                            <button
+                                class="bg-[#5ba233] text-white font-bold py-3 px-6 rounded-lg hover:bg-[#409A0E] transition w-full sm:w-auto"
+                                data-tg-key="about.button1">
+                                FERM in brief
+                            </button>
+                            <button
+                                class="bg-[#5ba233] text-white font-bold py-3 px-6 rounded-lg hover:bg-[#409A0E] transition w-full sm:w-auto"
+                                data-tg-key="about.button2">
+                                FERM en bref
+                            </button>
+                            <button
+                                class="bg-[#5ba233] text-white font-bold py-3 px-6 rounded-lg hover:bg-[#409A0E] transition w-full sm:w-auto"
+                                data-tg-key="about.button3">
+                                FERM em breve
+                            </button>
+                            <button
+                                class="bg-[#5ba233] text-white font-bold py-3 px-6 rounded-lg hover:bg-[#409A0E] transition w-full sm:w-auto"
+                                data-tg-key="about.button4">
+                                FERM en breve
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Right image -->
+                <div class="flex justify-center lg:justify-end hidden lg:block">
+                    <div class="relative w-full max-w-[320px] sm:max-w-md">
+                        <div class="absolute -top-5 -bottom-5 -right-5 w-2/6 bg-[#5ba233] z-0"
+                            data-tg-key="about.rightAccent">
+                        </div>
+                        <img src="../img/img1.jpg" alt="Phone" class="relative z-10 shadow-lg w-full h-auto"
+                            data-tg-key="about.rightImage">
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Bottom accent -->
+            <div class="w-full h-[70px] md:h-[80px] lg:h-[100px] bg-[url('../img/accent.png')] bg-cover bg-center"
+                data-tg-key="about.bottomAccent">
+            </div>
+
+        </section>
+
+        <!-- PROGRESS SECTION -->
+        <section class="relative w-full overflow-hidden">
+
+            <!-- White background with texture -->
+            <div class="absolute inset-0 bg-[url('../img/bgWhite.jpg')] bg-cover bg-center -z-10"
+                data-tg-key="stats.bg"></div>
+
+            <!-- Content -->
+            <div class="max-w-[1200px] mx-auto px-5 py-10 md:py-20 lg:py-20">
+
+                <!-- Section title -->
+                <h2 class="max-w-[800px] text-4xl md:text-5xl lg:text-5xl font-extrabold text-[#5ba233] mb-6 drop-shadow-lg"
+                    data-tg-key="stats.title">
+                    RESTORATION COMMITMENT PROGRESS
+                </h2>
+
+                <!-- Section subtitle -->
+                <p class="text-gray-700 mb-[120px]" data-tg-key="stats.subtitle">
+                    Current state of restoration progress, based on self-reported data in FERM.
+                </p>
+
+                <!-- Stats items -->
+                <div
+                    class="flex flex-col md:flex-row md:flex-wrap gap-y-[130px] md:gap-y-[100px] lg:flex-row gap-12 justify-between items-center">
+
+                    <!-- Item 1 -->
+                    <div class="relative flex justify-center flex-1">
+                        <span
+                            class="[text-shadow:5px_0_6px_rgba(0,0,0,0.28)] absolute top-[-70%] left-1/2 -translate-x-1/2 text-[120px] font-extrabold text-[#1c5e58] leading-none z-20"
+                            data-tg-key="stats.item1.number">
+                            1200
+                        </span>
+
+                        <div class="w-[350px] h-[130px] bg-[#f7931e] text-white text-xl font-bold tracking-wide rounded-2xl flex items-center justify-center text-center px-6 z-10"
+                            data-tg-key="stats.item1.desc">
+                            ha of area under <br /> restoration
+                        </div>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="relative flex justify-center flex-1">
+                        <span
+                            class="[text-shadow:5px_0_6px_rgba(0,0,0,0.28)] absolute top-[-75%] left-1/2 -translate-x-1/2 text-[120px] font-extrabold text-[#1c5e58] leading-none z-20"
+                            data-tg-key="stats.item2.number">
+                            48
+                        </span>
+
+                        <div class="w-[350px] h-[130px] bg-[#f7931e] text-white text-xl font-bold tracking-wide rounded-2xl flex items-center justify-center text-center px-6 z-10"
+                            data-tg-key="stats.item2.desc">
+                            Countries around the world are represented
+                        </div>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="relative flex justify-center flex-1">
+                        <span
+                            class="[text-shadow:5px_0_6px_rgba(0,0,0,0.28)] absolute top-[-70%] left-1/2 -translate-x-1/2 text-[120px] font-extrabold text-[#1c5e58] leading-none z-20"
+                            data-tg-key="stats.item3.number">
+                            125
+                        </span>
+
+                        <div class="w-[350px] h-[130px] bg-[#f7931e] text-white text-xl font-bold tracking-wide rounded-2xl flex items-center justify-center text-center px-6 z-10"
+                            data-tg-key="stats.item3.desc">
+                            Initiatives currently registered in FERM
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Bottom accent -->
+            <div class="w-full h-[70px] md:h-[80px] lg:h-[100px] bg-[url('../img/accent.png')] bg-cover bg-center"
+                data-tg-key="stats.bottomAccent">
+            </div>
+
+        </section>
+
+        <!-- INITIATIVES SECTION -->
+        <section class="relative w-full overflow-hidden">
+
+            <!-- Green background -->
+            <div class="absolute inset-0 bg-[url('../img/bgGreen.jpg')] bg-cover bg-center -z-10"
+                data-tg-key="initiatives.bg">
+            </div>
+
+            <!-- Content wrapper -->
+            <div class="max-w-[1200px] mx-auto px-5 py-10 md:py-20 lg:py-20">
+
+                <!-- Title -->
+                <h2 class="text-white text-4xl md:text-5xl lg:text-5xl font-extrabold mb-10"
+                    data-tg-key="initiatives.title">
+                    NEW RESTORATION INITIATIVES
+                </h2>
+
+                <!-- Slider -->
+                <div class="relative">
+                    <div class="swiper initiativesSwiper">
+                        <div class="swiper-wrapper">
+
+                            <!-- Slide 1 -->
+                            <div class="swiper-slide">
+                                <div class="relative h-full">
+                                    <div class="h-[220px]"></div>
+
+                                    <img src="../img/slide1.jpg" alt="Restoration"
+                                        class="absolute top-0 left-0 w-full h-[200px] object-cover rounded-t-[33px]"
+                                        data-tg-key="initiatives.slide1.image" />
+
+                                    <div class="relative z-10 -mt-12 bg-white shadow-md p-6 flex flex-col gap-4">
+                                        <h3 class="text-[#1f5c55] font-bold text-lg text-center"
+                                            data-tg-key="initiatives.slide1.title">
+                                            RESTORING<br />MEDITERRANEAN<br />FORESTS
+                                        </h3>
+
+                                        <ul class="text-[#1f5c55] text-sm leading-relaxed list-disc list-inside">
+                                            <li data-tg-key="initiatives.slide1.countries"><strong>Countries:</strong>
+                                                Lebanon,
+                                                Morocco, Tunisia, Turkey</li>
+                                            <li data-tg-key="initiatives.slide1.ecosystems"><strong>Ecosystems:</strong>
+                                                Temperate-boreal forests & woodlands; Shrublands & shrubby woodlands;
+                                                Savannas
+                                                and grasslands</li>
+                                        </ul>
+
+                                        <div class="absolute bottom-2 right-2 w-7 h-7 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-md"
+                                            data-tg-key="initiatives.slide1.info">
+                                            i
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Slide 2 -->
+                            <div class="swiper-slide">
+                                <div class="relative h-full">
+                                    <div class="h-[220px]"></div>
+
+                                    <img src="../img/slide2.jpg" alt="Restoration"
+                                        class="absolute top-0 left-0 w-full h-[200px] object-cover rounded-t-[33px]"
+                                        data-tg-key="initiatives.slide2.image" />
+
+                                    <div class="relative z-10 -mt-12 bg-white shadow-md p-6 flex flex-col gap-4">
+                                        <h3 class="text-[#1f5c55] font-bold text-lg text-center"
+                                            data-tg-key="initiatives.slide2.title">
+                                            RESTORING<br />MEDITERRANEAN <br />FORESTS
+                                        </h3>
+
+                                        <ul class="text-[#1f5c55] text-sm leading-relaxed list-disc list-inside">
+                                            <li data-tg-key="initiatives.slide2.countries"><strong>Countries:</strong>
+                                                Lebanon,
+                                                Morocco, Tunisia, Turkey</li>
+                                            <li data-tg-key="initiatives.slide2.ecosystems"><strong>Ecosystems:</strong>
+                                                Temperate-boreal forests & woodlands; Shrublands & shrubby woodlands;
+                                                Savannas
+                                                and grasslands</li>
+                                        </ul>
+
+                                        <div class="absolute bottom-2 right-2 w-7 h-7 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-md"
+                                            data-tg-key="initiatives.slide2.info">
+                                            i
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Slide 3 -->
+                            <div class="swiper-slide">
+                                <div class="relative h-full">
+                                    <div class="h-[220px]"></div>
+
+                                    <img src="../img/slide3.jpg" alt="Restoration"
+                                        class="absolute top-0 left-0 w-full h-[200px] object-cover rounded-t-[33px]"
+                                        data-tg-key="initiatives.slide3.image" />
+
+                                    <div class="relative z-10 -mt-12 bg-white shadow-md p-6 flex flex-col gap-4">
+                                        <h3 class="text-[#1f5c55] font-bold text-lg text-center"
+                                            data-tg-key="initiatives.slide3.title">
+                                            RESTORING<br />MEDITERRANEAN <br />FORESTS
+                                        </h3>
+
+                                        <ul class="text-[#1f5c55] text-sm leading-relaxed list-disc list-inside">
+                                            <li data-tg-key="initiatives.slide3.countries"><strong>Countries:</strong>
+                                                Lebanon,
+                                                Morocco, Tunisia, Turkey</li>
+                                            <li data-tg-key="initiatives.slide3.ecosystems"><strong>Ecosystems:</strong>
+                                                Temperate-boreal forests & woodlands; Shrublands & shrubby woodlands;
+                                                Savannas
+                                                and grasslands</li>
+                                        </ul>
+
+                                        <div class="absolute bottom-2 right-2 w-7 h-7 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-md"
+                                            data-tg-key="initiatives.slide3.info">
+                                            i
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Slide 4 ... -->
+                            <div class="swiper-slide">
+                                <div class="relative h-full">
+                                    <div class="h-[220px]"></div>
+
+                                    <img src="../img/slide3.jpg" alt="Restoration"
+                                        class="absolute top-0 left-0 w-full h-[200px] object-cover rounded-t-[33px]"
+                                        data-tg-key="initiatives.slide4.image" />
+
+                                    <div class="relative z-10 -mt-12 bg-white shadow-md p-6 flex flex-col gap-4">
+                                        <h3 class="text-[#1f5c55] font-bold text-lg text-center"
+                                            data-tg-key="initiatives.slide4.title">
+                                            RESTORING<br />MEDITERRANEAN <br />FORESTS
+                                        </h3>
+
+                                        <ul class="text-[#1f5c55] text-sm leading-relaxed list-disc list-inside">
+                                            <li data-tg-key="initiatives.slide4.countries"><strong>Countries:</strong>
+                                                Lebanon,
+                                                Morocco, Tunisia, Turkey</li>
+                                            <li data-tg-key="initiatives.slide4.ecosystems"><strong>Ecosystems:</strong>
+                                                Temperate-boreal forests & woodlands; Shrublands & shrubby woodlands;
+                                                Savannas
+                                                and grasslands</li>
+                                        </ul>
+
+                                        <div class="absolute bottom-2 right-2 w-7 h-7 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-md"
+                                            data-tg-key="initiatives.slide4.info">
+                                            i
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Swiper navigation -->
+                        <div class="swiper-button-prev [&::after]:text-[#f97316] [&::after]:text-[32px] left-0 z-50">
+                        </div>
+                        <div class="swiper-button-next [&::after]:text-[#f97316] [&::after]:text-[32px] right-0 z-50">
+                        </div>
+
+                    </div>
+
+                    <!-- Explore all link -->
+                    <div class="mt-10 flex items-center gap-4 text-white font-bold"
+                        data-tg-key="initiatives.exploreAll">
+                        <span>EXPLORE ALL RESTORATION INITIATIVES MAP -> </span>
+                        <img src="../img/map.svg" alt="Map icon" class="w-[60px] h-[60px]">
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="relative w-full overflow-hidden pt-[50px]">
+
+        <!-- White background with texture -->
+        <div class="absolute inset-0 bg-[url('../img/bgWhite.jpg')] bg-cover bg-center -z-10" data-tg-key="footer.bg">
+        </div>
+
+        <div class="max-w-[1200px] mx-auto px-5">
+
+            <div class="flex flex-col gap-10">
+
+                <div class="flex flex-col lg:flex-row justify-between gap-12 mb-10">
+
+                    <!-- Columns -->
+                    <nav class="grid grid-cols-2 md:grid-cols-4 gap-10 flex-1 text-sm text-[#1c5e58]">
+
+                        <div>
+                            <h3 class="text-lg font-bold mb-3 uppercase" data-tg-key="footer.learnMore.title">Learn more
+                            </h3>
+                            <ul class="space-y-1">
+                                <li><a href="#" class="underline hover:text-[#5ba233]"
+                                        data-tg-key="footer.learnMore.aboutUN">About the UN Decade</a></li>
+                                <li><a href="#" class="underline hover:text-[#5ba233]"
+                                        data-tg-key="footer.learnMore.target2KMGBF">About the Target 2 of the KMGBF</a>
+                                </li>
+                                <li><a href="#" class="underline hover:text-[#5ba233]"
+                                        data-tg-key="footer.learnMore.fao">FAO work on restoration</a></li>
+                                <li><a href="#" class="underline hover:text-[#5ba233]"
+                                        data-tg-key="footer.learnMore.impact">Impact stories</a></li>
+                                <li><a href="#" class="underline hover:text-[#5ba233]"
+                                        data-tg-key="footer.learnMore.partners">Partners</a></li>
+                                <li><a href="#" class="underline hover:text-[#5ba233]"
+                                        data-tg-key="footer.learnMore.events">Events</a></li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-bold mb-3 uppercase" data-tg-key="footer.resources.title">Resources
+                            </h3>
+                            <ul class="space-y-1">
+                                <li><a href="#" class="underline hover:text-[#5ba233]"
+                                        data-tg-key="footer.resources.publications">Publications</a></li>
+                                <li><a href="#" class="underline hover:text-[#5ba233]"
+                                        data-tg-key="footer.resources.elearning">eLearning</a></li>
+                                <li><a href="#" class="underline hover:text-[#5ba233]"
+                                        data-tg-key="footer.resources.videos">Videos</a></li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-bold mb-3 uppercase" data-tg-key="footer.relatedProjects.title">
+                                Related
+                                projects</h3>
+                            <ul class="space-y-1">
+                                <li><a href="#" class="underline hover:text-[#5ba233]"
+                                        data-tg-key="footer.relatedProjects.aim4nature">AIM4Nature</a></li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-bold mb-3 uppercase" data-tg-key="footer.support.title">Support</h3>
+                            <ul class="space-y-1">
+                                <li><a href="#" class="underline hover:text-[#5ba233]"
+                                        data-tg-key="footer.support.userGuide">FERM User Guide</a></li>
+                                <li><a href="#" class="underline hover:text-[#5ba233]"
+                                        data-tg-key="footer.support.contact">Contact</a></li>
+                            </ul>
+                        </div>
+
+                    </nav>
+
+                </div>
+
+                <!-- Newsletter form -->
+                <section class="self-end w-full lg:w-[420px] mb-1 max-w-[500px]">
+                    <p class="text-sm mb-2 text-gray-700" data-tg-key="footer.newsletter.text">
+                        Join our newsletter to get updates on FERM
+                    </p>
+
+                    <form id="newsletterForm" class="flex gap-2 flex-col" novalidate>
+                        <div class="flex gap-2 w-full">
+                            <input id="email" type="email" required placeholder="Email"
+                                class="flex-1 px-4 py-2 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f7931e] transition-colors"
+                                data-tg-key="footer.newsletter.placeholder" />
+
+                            <button id="joinBtn" type="submit" disabled
+                                class="px-5 py-2 rounded-md font-bold text-white bg-gray-400 cursor-not-allowed transition-colors"
+                                data-tg-key="footer.newsletter.button">
+                                Join
+                            </button>
+                        </div>
+
+                        <p id="emailError" class="mt-1 text-sm text-red-500 min-h-[1.25rem] invisible"
+                            data-tg-key="footer.newsletter.error">
+                            Please enter a valid email
+                        </p>
+                    </form>
+
+                    <script>
+                        const emailInput = document.getElementById('email');
+                        const joinBtn = document.getElementById('joinBtn');
+                        const emailError = document.getElementById('emailError');
+                        const form = document.getElementById('newsletterForm');
+
+                        emailInput.addEventListener('input', () => {
+                            if (emailInput.validity.valid) {
+                                joinBtn.disabled = false;
+                                joinBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+                                joinBtn.classList.add('bg-green-600', 'hover:bg-green-700');
+                                emailInput.classList.remove('border-red-500');
+                                emailError.classList.add('invisible');
+                            } else {
+                                joinBtn.disabled = true;
+                                joinBtn.classList.remove('bg-green-600', 'hover:bg-green-700');
+                                joinBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+                                emailInput.classList.add('border-red-500');
+                                emailError.classList.remove('invisible');
+                            }
+                        });
+
+                        form.addEventListener('submit', (e) => {
+                            if (!emailInput.validity.valid) {
+                                e.preventDefault();
+                                emailInput.classList.add('border-red-500');
+                                emailError.classList.remove('invisible');
+                            }
+                        });
+                    </script>
+                </section>
+
+                <div>
+                    <p class="mb-10 max-w-[1000px] text-2xl md:text-3xl lg:text-3xl font-extrabold text-[#5ba233] leading-tight"
+                        data-tg-key="footer.joinGenerationRestoration">
+                        Join #GenerationRestoration and share your restoration initiative and good practices with the
+                        world.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Accent images -->
+        <section>
+            <div class="w-full flex flex-col md:flex-row items-center ">
+                <div class="hidden md:block w-1/2 h-auto md:h-[70px] lg:h-[100px] bg-[url('../img/accent1.png')] bg-cover bg-center"
+                    data-tg-key="footer.accent1"></div>
+                <div class="w-full md:w-1/2 space-y-6">
+                    <div class="flex items-center flex-wrap">
+                        <img src="../img/footerImg.png" alt="logo" class="h-auto md:h-[70px] lg:h-[100px]"
+                            data-tg-key="footer.logoAlt">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bottom accent -->
+        <div class="w-full h-[70px] md:h-[80px] lg:h-[100px] bg-[url('../img/accent.png')] bg-cover bg-center"
+            data-tg-key="footer.bottomAccent"></div>
+
+    </footer>
+
+    <!-- SWIPER -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script>
+        const swiper = new Swiper('.initiativesSwiper', {
+            slidesPerView: 1,
+            spaceBetween: 24,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            breakpoints: {
+                768: {
+                    slidesPerView: 2,
+                },
+                1024: {
+                    slidesPerView: 3,
+                },
+            },
+        });
+    </script>
+
+</body>
+
+</html>
