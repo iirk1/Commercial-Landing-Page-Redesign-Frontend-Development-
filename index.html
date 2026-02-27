@@ -28,9 +28,9 @@
         }
     </script>
 
-    <script type="module" src="https://unpkg.com/@tolgee/web"></script>
-    <script>
-        // Initialize Tolgee
+    <script type="module">
+        import { Tolgee, TolgeeDetectLanguage } from 'https://unpkg.com/@tolgee/web?module';
+
         const tg = Tolgee().use(TolgeeDetectLanguage()).init({ language: 'en', fallbackLanguage: 'en' });
     </script>
 
@@ -193,7 +193,7 @@
                 <div class="flex flex-col items-center gap-3 md:gap-1 lg:gap-6">
 
                     <!-- Logo -->
-                    <img src="/img/logo.png" alt="logo" class="relative z-10 w-62 h-32" data-tg-key="main.logo">
+                    <img src="img/logo.png" alt="logo" class="relative z-10 w-62 h-32" data-tg-key="main.logo">
 
                     <!-- Main title -->
                     <h1 class="text-4xl sm:text-7xl md:text-6xl lg:text-8xl font-extrabold uppercase
@@ -397,7 +397,7 @@
 
                     <!-- Card 1 -->
                     <div class="flex flex-col md:flex-row sm:flex-col items-center gap-4 w-full">
-                        <img src="/img/logo1.png" alt="first logo"
+                        <img src="img/logo1.png" alt="first logo"
                             class="w-[200px] md:w-[300px] h-auto flex-shrink-0 mx-auto md:mx-0"
                             data-tg-key="about.logo1">
                         <p class="text-center md:text-left text-sm sm:text-base md:text-md flex-1"
@@ -412,7 +412,7 @@
 
                     <!-- Card 2 -->
                     <div class="flex flex-col md:flex-row sm:flex-col items-center gap-4 w-full">
-                        <img src="/img/logo2.png" alt="second logo"
+                        <img src="img/logo2.png" alt="second logo"
                             class="w-[200px] md:w-[300px] h-auto flex-shrink-0 mx-auto md:mx-0"
                             data-tg-key="about.logo2">
                         <p class="text-center md:text-left text-sm sm:text-base md:text-md flex-1"
@@ -468,7 +468,7 @@
                         <div class="absolute -top-5 -bottom-5 -right-5 w-2/6 bg-[#5ba233] z-0"
                             data-tg-key="about.rightAccent">
                         </div>
-                        <img src="/img/img1.jpg" alt="Phone" class="relative z-10 shadow-lg w-full h-auto"
+                        <img src="img/img1.jpg" alt="Phone" class="relative z-10 shadow-lg w-full h-auto"
                             data-tg-key="about.rightImage">
                     </div>
                 </div>
@@ -586,7 +586,7 @@
                                 <div class="relative h-full">
                                     <div class="h-[220px]"></div>
 
-                                    <img src="/img/slide1.jpg" alt="Restoration"
+                                    <img src="img/slide1.jpg" alt="Restoration"
                                         class="absolute top-0 left-0 w-full h-[200px] object-cover rounded-t-[33px]"
                                         data-tg-key="initiatives.slide1.image" />
 
@@ -619,7 +619,7 @@
                                 <div class="relative h-full">
                                     <div class="h-[220px]"></div>
 
-                                    <img src="/img/slide2.jpg" alt="Restoration"
+                                    <img src="img/slide2.jpg" alt="Restoration"
                                         class="absolute top-0 left-0 w-full h-[200px] object-cover rounded-t-[33px]"
                                         data-tg-key="initiatives.slide2.image" />
 
@@ -652,7 +652,7 @@
                                 <div class="relative h-full">
                                     <div class="h-[220px]"></div>
 
-                                    <img src="/img/slide3.jpg" alt="Restoration"
+                                    <img src="img/slide3.jpg" alt="Restoration"
                                         class="absolute top-0 left-0 w-full h-[200px] object-cover rounded-t-[33px]"
                                         data-tg-key="initiatives.slide3.image" />
 
@@ -685,7 +685,7 @@
                                 <div class="relative h-full">
                                     <div class="h-[220px]"></div>
 
-                                    <img src="/img/slide3.jpg" alt="Restoration"
+                                    <img src="img/slide3.jpg" alt="Restoration"
                                         class="absolute top-0 left-0 w-full h-[200px] object-cover rounded-t-[33px]"
                                         data-tg-key="initiatives.slide4.image" />
 
@@ -727,7 +727,7 @@
                     <div class="mt-10 flex items-center gap-4 text-white font-bold"
                         data-tg-key="initiatives.exploreAll">
                         <span>EXPLORE ALL RESTORATION INITIATIVES MAP -> </span>
-                        <img src="/img/map.svg" alt="Map icon" class="w-[60px] h-[60px]">
+                        <img src="img/map.svg" alt="Map icon" class="w-[60px] h-[60px]">
                     </div>
 
                 </div>
@@ -885,7 +885,7 @@
                     data-tg-key="footer.accent1"></div>
                 <div class="w-full md:w-1/2 space-y-6">
                     <div class="flex items-center flex-wrap">
-                        <img src="/img/footerImg.png" alt="logo" class="h-auto md:h-[70px] lg:h-[100px]"
+                        <img src="img/footerImg.png" alt="logo" class="h-auto md:h-[70px] lg:h-[100px]"
                             data-tg-key="footer.logoAlt">
                     </div>
                 </div>
